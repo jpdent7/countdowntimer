@@ -113,6 +113,23 @@
         oscillator.stop();
       }, 1250); // Beep duration in ms
     }
+    // Restore timer on page load
+    window.onload = () => {
+      const savedEndTime = localStorage.getItem("timerEndTime");
+      if (savedEndTime) {
+        endTime = parseInt(savedEndTime);
+        if (Date.now() < endTime) {
+          countdown = setInterval(updateDisplay, 1000);
+          updateDisplay();
+        } else {
+          localStorage.removeItem("timerEndTime");
+        }
+      }
+    };
+
+    document.getElementById("titleInput").addEventListener("input", (e) => {
+      document.getElementById("title").textContent = e.target.value || "Timer";
+    });
   </script>
 </body>
 </html>
