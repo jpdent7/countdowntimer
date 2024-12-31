@@ -47,11 +47,11 @@
 </head>
 <body>
   <h1 id="title">Timer</h1>
-  <input id="titleInput" type="text" placeholder="What is you doin" />
+  <input id="titleInput" type="text" placeholder="Enter title here" />
   <br>
   <input id="timeInput" type="number" placeholder="Time in minutes" />
   <br>
-  <button onclick="startTimer()">Go</button>
+  <button onclick="startTimer()">Start</button>
   <button onclick="resetTimer()">Reset</button>
   <div id="timerDisplay">00:00</div>
 
@@ -80,6 +80,7 @@
         document.getElementById("timerDisplay").textContent = formatTime(timeLeft);
         if (timeLeft <= 0) {
           clearInterval(countdown);
+          beep();
           alert("Time's up!");
         }
       }, 1000);
@@ -94,6 +95,24 @@
     document.getElementById("titleInput").addEventListener("input", (e) => {
       document.getElementById("title").textContent = e.target.value || "Timer";
     });
+
+    function beep() {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      oscillator.type = "sine"; // Beep sound
+      oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); // Frequency in Hz
+      gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+
+      oscillator.start();
+      setTimeout(() => {
+        oscillator.stop();
+      }, 500); // Beep duration in ms
+    }
   </script>
 </body>
 </html>
