@@ -123,9 +123,14 @@
           updateDisplay();
         } else {
           localStorage.removeItem("timerEndTime");
+          document.getElementById("timerDisplay").textContent = "00:00";
         }
       }
     };
+
+    document.getElementById("titleInput").addEventListener("input", (e) => {
+      document.getElementById("title").textContent = e.target.value || "Timer";
+    });
 
     document.getElementById("titleInput").addEventListener("input", (e) => {
       document.getElementById("title").textContent = e.target.value || "Timer";
